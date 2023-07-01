@@ -13,4 +13,6 @@ temp/
 .vscode/launch.json
 
 # Python temp folder
-__pycache__
+*.pyc
+__pycache__/
+applicationModule/__pycache__/

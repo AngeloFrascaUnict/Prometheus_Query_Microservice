@@ -1,0 +1,88 @@
+Struttura progetto (usiamo Application Factory pattern e Blueprints) basato su : https://hackersandslackers.com/flask-blueprints/
+
+*   The Flask Application Factory pattern :
+    Notice there's no app.py, main.py, or anything of the sort in our base directory. 
+	Instead, the entirety of our app lives in the /application folder, with the creation of our app happening in __init__.py. 
+	The init file is where we actually create what's called the Application Factory.
+
+	If you're wondering how we deploy an app where the main entry point isn't in the root directory, 
+	I'm very proud of you. Yes, our app is being created in application/__init__.py, 
+	so a file called wsgi.py simply imports this file to serve as our app gateway.
+
+
+*	A Blueprint :
+    is a way to organize a group of related views and other code. 
+	Rather than registering views and other code directly with an application, they are registered with a blueprint. 
+	Then the blueprint is registered with the application when it is available in the factory function.
+
+/Prometheus_Query_Microservice
++-- /applicationModule
+¦   +-- __init__.py
+¦   +-- auth.py
+¦   +-- forms.py
+¦   +-- models.py
+¦   +-- routes.py
+¦   +-- /static
+¦   +-- /templates
++-- .env
++-- config.py
++-- wsgi.py
+
+
+/Prometheus_Query_Microservice
+├── /applicationModule
+│   ├── __init__.py
+
+│   ├── api.py
+│   ├── routes.py               routes generiche
+
+│   ├── /home                   Blueprint home : routes della Home
+│   │   ├── /templates
+│   │   ├── /static
+│   │   └── routes.py
+
+│   ├── /prometheus             Blueprint prometheus : routes per interazione con Prometheus
+│   │   ├── /templates
+│   │   ├── /static
+│   │   └── routes.py
+
+│   ├── /auth                   Blueprint auth : routes/view function per il login/logout/register
+│   │   ├── /templates
+│   │   ├── /static
+│   │   └── routes.py
+
+............
+............
+
+│   ├── /static
+│   └── /templates
+├── README.md
+├── config.py
+├── .env
+├── requirements.txt
+└── wsgi.py
+
+
+
+Questo è il significato di ogni elemento della soprastante struttura :
+
+/applicationModule  -->     modulo principale che contiene essenzialmente l'istanziazione della applicazione
+    __init__.py     -->     file che contiene la Application Factory ~ funzione per istanziare e configurare l'applicazione
+    routes.py       -->     routes generiche
+
+    auth.py         -->     qui porre le routes relative al login/logout/register : è un blueprint da registrare nella 
+                            "Application Factory"
+
+    prometheus.py   -->     qui porre le routes relative alla interazione con Prometheus                            
+    forms.py        -->     se si realizzeranno forms con la libreria xyz porre qui le classi usate
+    models.py       -->     se si adopera l'ORM SQLAlchemy qui porre le classi del Model
+
+    /static         -->     directory per i files static (*.css, *.js ecc.)
+    /templates      -->     template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
+
+.env                -->     file con le variabili d'ambiente nel formato Key=Value di cui fare il setting 
+                            nella macchina Host(Developer o Production)
+config.py           -->     file di configurazione che attinge dalle variabili d'ambiente e usato per configurare  
+                            l'applicazione 
+wsgi.py             -->     entry point dell'applicazione
+
