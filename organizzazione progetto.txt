@@ -16,73 +16,37 @@ Struttura progetto (usiamo Application Factory pattern e Blueprints) basato su :
 	Then the blueprint is registered with the application when it is available in the factory function.
 
 /Prometheus_Query_Microservice
-+-- /applicationModule
-¦   +-- __init__.py
-¦   +-- auth.py
-¦   +-- forms.py
-¦   +-- models.py
-¦   +-- routes.py
-¦   +-- /static
-¦   +-- /templates
-+-- .env
-+-- config.py
-+-- wsgi.py
+├── /applicationModule          modulo principale che contiene essenzialmente l'istanziazione della applicazione
+│   ├── __init__.py             file che contiene la Application Factory ~ funzione per istanziare e configurare l'applicazione
 
+│   ├── api.py                  chiamate ad api che restituiscono dati ??? Da definire
 
-/Prometheus_Query_Microservice
-├── /applicationModule
-│   ├── __init__.py
+│   ├── routes.py               routes generiche per url_prefix "/"
 
-│   ├── api.py
-│   ├── routes.py               routes generiche
-
-│   ├── /home                   Blueprint home : routes della Home
-│   │   ├── /templates
-│   │   ├── /static
+│   ├── /home                   Blueprint home : routes per url_prefix "/home"
+│   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
+│   │   ├── /static             directory per i files static (*.css, *.js ecc.)
 │   │   └── routes.py
 
-│   ├── /prometheus             Blueprint prometheus : routes per interazione con Prometheus
-│   │   ├── /templates
-│   │   ├── /static
+│   ├── /prometheus             Blueprint prometheus : routes per url_prefix "/Prometheus"
+│   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
+│   │   ├── /static             directory per i files static (*.css, *.js ecc.)
 │   │   └── routes.py
 
-│   ├── /auth                   Blueprint auth : routes/view function per il login/logout/register
-│   │   ├── /templates
-│   │   ├── /static
+│   ├── /auth                   Blueprint auth : routes per url_prefix "/login" "/logout" "/register"
+│   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
+│   │   ├── /static             directory per i files static (*.css, *.js ecc.)
 │   │   └── routes.py
 
 ............
 ............
 
-│   ├── /static
-│   └── /templates
+│   ├── /static                 directory per i files static (*.css, *.js ecc.)
+│   └── /templates              template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
+
 ├── README.md
-├── config.py
-├── .env
-├── requirements.txt
-└── wsgi.py
-
-
-
-Questo è il significato di ogni elemento della soprastante struttura :
-
-/applicationModule  -->     modulo principale che contiene essenzialmente l'istanziazione della applicazione
-    __init__.py     -->     file che contiene la Application Factory ~ funzione per istanziare e configurare l'applicazione
-    routes.py       -->     routes generiche
-
-    auth.py         -->     qui porre le routes relative al login/logout/register : è un blueprint da registrare nella 
-                            "Application Factory"
-
-    prometheus.py   -->     qui porre le routes relative alla interazione con Prometheus                            
-    forms.py        -->     se si realizzeranno forms con la libreria xyz porre qui le classi usate
-    models.py       -->     se si adopera l'ORM SQLAlchemy qui porre le classi del Model
-
-    /static         -->     directory per i files static (*.css, *.js ecc.)
-    /templates      -->     template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
-
-.env                -->     file con le variabili d'ambiente nel formato Key=Value di cui fare il setting 
-                            nella macchina Host(Developer o Production)
-config.py           -->     file di configurazione che attinge dalle variabili d'ambiente e usato per configurare  
-                            l'applicazione 
-wsgi.py             -->     entry point dell'applicazione
+├── config.py                   file di configurazione che attinge dalle variabili d'ambiente e usato per configurare l'applicazione
+├── .env                        file con le variabili d'ambiente nel formato Key=Value di cui fare il setting nella macchina Host(Developer o Production)
+├── requirements.txt            dipendenze progetto : usato da Dockerfile
+└── wsgi.py                     Entry Point per l'applicazione
 
