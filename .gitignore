@@ -9,3 +9,8 @@ temp/
 
 # ignore ALL files in ANY directory named .vscode
 .vscode/	
+
+.vscode/launch.json
+
+# Python temp folder
+__pycache__
