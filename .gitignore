@@ -11,9 +11,9 @@ temp/
 .venv/
 
 # ignore ALL files in ANY directory named .vscode
-.vscode/	
+.vscode/
 
-.vscode/launch.json
+.vscode/*.*
 
 # Python temp folder
 *.pyc
