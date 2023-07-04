@@ -21,9 +21,24 @@ class ProdConfig(Config):
     FLASK_DEBUG = False
     DATABASE_URI = environ.get('PROD_DATABASE_URI')
 
+    # Database MongoDB 
+    #MONGODB_SETTINGS = environ.get('MONGODB_SETTINGS')     non funziona!!!
+    MONGODB_SETTINGS = {"db":"my-local-db", "host":"localhost", "port":27017}    
+
 
 class DevConfig(Config):
     """Development config."""
     FLASK_ENV = "development"
     FLASK_DEBUG = True
     DATABASE_URI = environ.get('DEV_DATABASE_URI')
+
+    # Database MongoDB 
+    #MONGODB_SETTINGS = environ.get('MONGODB_SETTINGS')     #non funziona!!!
+    MONGODB_SETTINGS = {"db":"my-local-db", "host":"localhost", "port":27017}    
+
+    #non funziona ATLAS!!!
+    # AUTHENTICATION_SOURCE = environ.get('AUTHENTICATION_SOURCE')     
+    # MONGODB_HOST = environ.get('MONGODB_HOST')
+    # MONGODB_PORT = environ.get('MONGODB_PORT')
+    # MONGODB_USERNAME = environ.get('MONGODB_USERNAME')
+    # MONGODB_PASSWORD = environ.get('MONGODB_PASSWORD')

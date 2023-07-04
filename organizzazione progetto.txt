@@ -21,23 +21,26 @@ Struttura progetto (usiamo Application Factory pattern e Blueprints) basato su :
 
 │   ├── api.py                  chiamate ad api che restituiscono dati ??? Da definire
 
+│   ├── models.py               model per generiche per url_prefix "/"
 │   ├── routes.py               routes generiche per url_prefix "/"
 
 │   ├── /home                   Blueprint home : routes per url_prefix "/home"
 │   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
 │   │   ├── /static             directory per i files static (*.css, *.js ecc.)
-│   │   └── routes.py
+│   │   └── models.py 			model per il prefix /home
+│   │   └── routes.py 			routes per il prefix /home
 
 │   ├── /prometheus             Blueprint prometheus : routes per url_prefix "/Prometheus"
 │   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
 │   │   ├── /static             directory per i files static (*.css, *.js ecc.)
-│   │   └── routes.py
+│   │   └── models.py 			model per il prefix /prometheus
+│   │   └── routes.py 			routes per il prefix /prometheus
 
 │   ├── /auth                   Blueprint auth : routes per url_prefix "/login" "/logout" "/register"
 │   │   ├── /templates          template Jinjia per la realizzazione di pagine HTML dinamiche da esporre ai Client
 │   │   ├── /static             directory per i files static (*.css, *.js ecc.)
-│   │   └── routes.py
-
+│   │   └── models.py 			model per il prefix /auth
+│   │   └── routes.py 			routes per il prefix /auth
 ............
 ............
 

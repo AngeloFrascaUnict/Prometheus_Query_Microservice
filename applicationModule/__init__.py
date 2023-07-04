@@ -1,7 +1,9 @@
 from flask import Flask
+from flask_mongoengine import MongoEngine
 
 # Globally accessible libraries
 #db = SQLAlchemy()
+db = MongoEngine()
 
 def create_app():
     """Initialize the core application."""
@@ -14,7 +16,7 @@ def create_app():
     app.config.from_object('config.DevConfig')
 
     # Initialize Plugins
-    #db.init_app(app)
+    db.init_app(app)
 
     with app.app_context():
 
