@@ -20,7 +20,10 @@ usando una rete comune ai 2 container : configurazione funzionante, da preferire
 (.venv) PS C:\...\Prometheus_Query_Microservice > docker pull mongo
 (.venv) PS C:\...\Prometheus_Query_Microservice > docker images
 																				
-(.venv) PS C:\...\Prometheus_Query_Microservice > docker container run -d -v "C:\TESI\Progetti\GIT\Prometheus_Query_Microservice\MongoDockerData\data\db:/usr/share/data" --name mongo_container -p 27017:27017 --network my-network mongo
+# crea un container con una cartella usata per la persistenza dei dati nel container, cioè spegnendo e riattivando il container troviamo i dati
+(.venv) PS C:\...\Prometheus_Query_Microservice > docker container run -d -v MongoDockerData:/data/db --name mongo_container -p 27017:27017 --network my-network mongo
+
+
 
 # run container with name 'prometheus_microservice_container' : 4
 (.venv) PS C:\...\Prometheus_Query_Microservice > docker run -d -p 5000:5000 --name prometheus_microservice_container --network my-network prometheus_query_microservice:1.0
