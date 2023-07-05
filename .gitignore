@@ -6,14 +6,16 @@
 
 # ignore ALL files in ANY directory named temp
 temp/ 
+temp/*.*
+
 info/ 
+info/*.*
 
 # ignore ALL files in ANY directory named .venv
 .venv/
 
 # ignore ALL files in ANY directory named .vscode
 .vscode/
-
 .vscode/*.*
 
 # Python temp folder
@@ -22,7 +24,4 @@ __pycache__/
 applicationModule/__pycache__/ 
 
 
-# varie da escludere
-info on manage API on db.txt
-info on manage API on file.txt
 
