@@ -35,19 +35,6 @@ def home_prometheus_page():
 
 
 # GET for getting User/Users
-@app.route('/prometheus/api/remote/users/', methods=['GET'])
-def get_query_results_remote():
-
-    users = User.objects()
- 
-    if users is None:
-        abort(404, description="User inesistente")
-    else:
-        return jsonify(users.to_json())
-
-
-
-# GET for getting User/Users
 @app.route('/prometheus/api/users/', methods=['GET'])
 @app.route('/prometheus/api/users/<string:firstname>', methods=['GET'])
 def get_query_results(firstname=None):

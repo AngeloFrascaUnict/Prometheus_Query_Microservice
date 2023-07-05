@@ -10,10 +10,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
 
     # Using a production configuration
-    app.config.from_object('config.ProdConfig')
-
-    # Using a development configuration
-    #app.config.from_object('config.DevConfig')
+    app.config.from_object('config.Config')
 
     # Initialize Plugins
     db.init_app(app)
