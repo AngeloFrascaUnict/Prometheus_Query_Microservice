@@ -23,7 +23,9 @@ class ProdConfig(Config):
 
     # Database MongoDB 
     #MONGODB_SETTINGS = environ.get('MONGODB_SETTINGS')     non funziona!!!
-    MONGODB_SETTINGS = {"db":"my-local-db", "host":"localhost", "port":27017}    
+
+    #IMPORTANTE : usare come host il nome che viene dato al container di MongoDB su Docker 
+    MONGODB_SETTINGS = {"db":"my-local-db", "host":"mongo_container", "port":27017}    
 
 
 class DevConfig(Config):
