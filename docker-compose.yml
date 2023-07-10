@@ -32,6 +32,11 @@ services:
   mongo:
     image: "mongo:latest"
 
+    volumes:
+
+      - app_data:/data/db
+
+
     # Give your container a static name
     container_name: mongo_container
 
@@ -39,3 +44,8 @@ services:
      - "27017:27017"
 
     command: mongod --port 27017 --bind_ip 0.0.0.0
+
+
+volumes:
+
+  app_data:
