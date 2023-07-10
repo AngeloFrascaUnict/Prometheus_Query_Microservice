@@ -1,31 +1,55 @@
 import mongoengine as me
+import datetime
 
-class User(me.Document):
-    meta = {
-        'collection': 'users'
-    }
-    firstname = me.StringField()
-    lastname = me.StringField()
-    status = me.BooleanField()
-    def to_json(self):
-        return {"firstname": self.firstname,
-                "lastname": self.lastname}
-    
+# Model for save/load Prometheus queries
+class Metric(me.EmbeddedDocument):
+	__name__ = me.StringField()
+	group = me.StringField()
+	instance = me.StringField()
+	job = me.StringField()
+
+class ResultVector(me.EmbeddedDocument):
+	metric = me.EmbeddedDocumentField(Metric)
+	value = me.ListField(me.DecimalField())
+
+class ResultMatrix(me.EmbeddedDocument):                    
+	metric = me.EmbeddedDocumentField(Metric)
+	value = me.ListField(me.ListField(me.DecimalField()))		
+
+class ResultVector(me.EmbeddedDocument):
+	metric = me.EmbeddedDocumentField(Metric)
+	value = me.ListField(me.DecimalField())
+
+class ResultMatrix(me.EmbeddedDocument):                    
+	metric = me.EmbeddedDocumentField(Metric)
+	value = me.ListField(me.ListField(me.DecimalField()))		
+
+class DataVector(me.EmbeddedDocument):
+	resultType = me.StringField()
+	result = me.ListField(me.EmbeddedDocumentField(ResultVector))
+
+class DataMatrix(me.EmbeddedDocument):
+	resultType = me.StringField()
+	result = me.ListField(me.EmbeddedDocumentField(ResultMatrix))
 
 
-class Customer(me.Document):
-    meta = {
-        'collection': 'customers'
-    }
-    username = me.StringField()
-    name = me.StringField()
 
-    address = me.StringField()
-    birthdate = me.DateTimeField()
-    email = me.EmailField()
 
-    active = me.EmailField()
+class QueryResultVector(me.Document):
+	status = me.StringField(required=True)
+	data = me.EmbeddedDocumentField(DataVector)
+	errorType = me.StringField()
+	error = me.StringField()
+	created_at = me.DateTimeField(default=datetime.datetime.utcnow)
+	#created_at = me.DateTimeField(default=datetime.datetime.now)
 
-    def to_json(self):
-        return {"username": self.username,
-                "name": self.name}
+class QueryResultMatrix(me.Document):
+	status = me.StringField(required=True)
+	data = me.EmbeddedDocumentField(DataMatrix)
+	errorType = me.StringField()
+	error = me.StringField()
+	created_at = me.DateTimeField(default=datetime.datetime.utcnow)
+	#created_at = me.DateTimeField(default=datetime.datetime.now)
+
+
+

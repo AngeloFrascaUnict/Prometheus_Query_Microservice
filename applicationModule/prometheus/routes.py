@@ -7,13 +7,17 @@ from flask import current_app as app
 # y = json.dumps(x) con x un dict : Convert from Python to JSON
 import json  
 
+# libreria per gestire le date
+import datetime
+
 # serve a convertire i cursor restituiti dalle aggregation in JSON                  
 from bson import json_util
 
 # import models
-from .models import User, Customer
+from .modelsold import User, Customer
 
-
+from .models import QueryResultVector, DataVector, ResultVector, Metric
+from .models import QueryResultMatrix, DataMatrix, ResultMatrix
 
 
 
@@ -32,6 +36,47 @@ prometheus_bp = Blueprint(
 def home_prometheus_page():
 
     return "Hi all by Prometheus page!"
+
+
+
+# GET for getting data from Prometheus queries, passing formDateTime : YYYYMMDD:HHmm
+@app.route('/prometheus/api/data/', methods=['GET'])
+@app.route('/prometheus/api/data/<string:fromDateTime>', methods=['GET'])
+def get_query_prometheus_results(fromDateTime=None):
+
+    if fromDateTime == None :
+        data = QueryResultVector.objects()
+    else :
+        # constructor : datetime.datetime(year, month, day, [hour], [minute], [second], [microsecond], [tzone])
+        fromDateTimeFormatted = datetime.datetime(int(fromDateTime[0:4]), int(fromDateTime[4:6]), int(fromDateTime[6:8])
+            , int(fromDateTime[9:11]), int(fromDateTime[11:13]))
+
+        data = QueryResultVector.objects(created_at__gt=fromDateTimeFormatted)
+        
+    if data is None:
+        abort(404, description="Dati inesistenti")
+    else:
+        return jsonify(data.to_json())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # GET for getting User/Users
@@ -83,7 +128,6 @@ def create_user():
     user.save()
 
     return jsonify(user.to_json())
-
 
 
 # DELETE for deleting User
