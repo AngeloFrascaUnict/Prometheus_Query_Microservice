@@ -1,4 +1,5 @@
-# File con le query da eseguire in batch su Prometheus_Query_Microservice
+# FILE CON LE QUERY DA ESEGUIRE IN BATCH SU Prometheus_Query_Microservice
+# NB : verranno processate solo le line che non iniziano con '#' o con ' '
 
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
@@ -12,5 +13,25 @@ process_start_time_seconds
 # TYPE process_cpu_seconds_total counter
 process_cpu_seconds_total
 
+# Query che produce risultati Matrix
+up[1d:10m]
+
+# Bad Query for testing
+rate(http_requests_total{job="apiserver", handler="/api/comments"}[5m])[range,resolution]
 
 
+# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds
+
+# HELP prometheus_http_requests_total Counter of HTTP requests.
+# TYPE prometheus_http_requests_total counter
+prometheus_http_requests_total
+
+# HELP prometheus_http_requests_total Counter of HTTP requests.
+# TYPE prometheus_http_requests_total counter
+
+# sum(prometheus_http_requests_total{method="GET"} @ 1609746000)
+sum(prometheus_http_requests_total{code ='200'})
+
+rate(prometheus_http_requests_total[5m] )

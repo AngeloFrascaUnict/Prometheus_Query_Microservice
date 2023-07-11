@@ -13,12 +13,9 @@ import datetime
 # serve a convertire i cursor restituiti dalle aggregation in JSON                  
 from bson import json_util
 
-# import models
+# import MongoEngine models
 from .modelsold import User, Customer
-
-from .models import QueryResultVector, DataVector, ResultVector, Metric
-from .models import QueryResultMatrix, DataMatrix, ResultMatrix
-
+from .models import PrometheusQueriesResult, Data, Result, Metric
 
 
 # Blueprint Configuration
@@ -45,14 +42,14 @@ def home_prometheus_page():
 def get_query_prometheus_results(fromDateTime=None):
 
     if fromDateTime == None :
-        data = QueryResultVector.objects()
+        data = PrometheusQueriesResult.objects()
     else :
         # constructor : datetime.datetime(year, month, day, [hour], [minute], [second], [microsecond], [tzone])
         fromDateTimeFormatted = datetime.datetime(int(fromDateTime[0:4]), int(fromDateTime[4:6]), int(fromDateTime[6:8])
             , int(fromDateTime[9:11]), int(fromDateTime[11:13]))
 
-        data = QueryResultVector.objects(created_at__gt=fromDateTimeFormatted)
-        
+        data = PrometheusQueriesResult.objects(created_at__gt=fromDateTimeFormatted)
+
     if data is None:
         abort(404, description="Dati inesistenti")
     else:

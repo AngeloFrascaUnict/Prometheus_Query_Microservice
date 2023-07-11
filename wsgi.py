@@ -1,7 +1,7 @@
 #entry point dell'applicazione
 from applicationModule import create_app
 #import threadsModule.prometheus 
-from threadsModule.prometheusThread import PrometheusScraperThread 
+from threadsModule.PrometheusScraperThread import PrometheusScraperThread 
 
 app = create_app()
 
