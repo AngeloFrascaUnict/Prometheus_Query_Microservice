@@ -11,7 +11,48 @@ from flask import jsonify
 # classe di metodi per effettuare lo scrape dei dati da Prometheus e salvare i dati su MongoDB
 class PrometheusScraperThread(threading.Thread):
 
-  def scrape(query):
+  # funzione che verifica se Prometheus server è attivo
+  def isHealth(self):
+
+      boolReturn = False
+      uriResponse = None
+
+      # è necessario mettere il protocollo http
+      uri = "http://localhost:9090/-/healthy"
+
+      try:
+        uriResponse = requests.get(uri)
+      except requests.ConnectionError:
+        print("Connection Error")  
+    
+      if uriResponse != None:
+        if uriResponse.status_code == 200:
+          boolReturn = True
+
+      return boolReturn
+
+  # funzione che verifica se Prometheus server è pronto a ricevere query
+  def isReady(self):
+
+      boolReturn = False
+      uriResponse = None
+
+      # è necessario mettere il protocollo http
+      uri = "http://localhost:9090/-/ready"
+
+      try:
+        uriResponse = requests.get(uri)
+      except requests.ConnectionError:
+        print("Connection Error")  
+    
+      if uriResponse != None:
+        if uriResponse.status_code == 200:
+          boolReturn = True
+
+      return boolReturn
+  
+  # funzione che effettua lo scrape di una query
+  def scrape(self, query):
 
       # è necessario mettere il protocollo http
       # query = "process_virtual_memory_bytes"
@@ -25,12 +66,10 @@ class PrometheusScraperThread(threading.Thread):
       textResponse = uriResponse.text
       jsonResponse = uriResponse.json()
 
-      #Jresponse = uResponse.text
-      #data = json.loads(Jresponse)
-
       return jsonResponse
 
-  def parseData(jsonData):
+  # funzione che parserizza i dati restituiti dalla query su Prometheus server e ne crea un Model per MongoDB
+  def parseData(self, query, jsonData):
 
     # costruisco un oggetto PrometheusQueryResult a partire dai dati JSON restituiti dalla HTTP API Query su Prometheus 
     # sia che si tratti di 'Instant queries' o di 'Range queries'
@@ -38,8 +77,8 @@ class PrometheusScraperThread(threading.Thread):
 
       # se ci sono errori nella query restituisco il tipo di errore
       if "error" in jsonData:
-        query = PrometheusQueriesResult(status = jsonData['status'], errorType = jsonData['errorType'], error = jsonData['error'])
-        return query
+        queryModel = PrometheusQueriesResult(query = query, status = jsonData['status'], errorType = jsonData['errorType'], error = jsonData['error'])
+        return queryModel
       
       resultList = []
 
@@ -65,20 +104,23 @@ class PrometheusScraperThread(threading.Thread):
           resultList.append(resultMatrixItem)
 
       data = {"resultType" : jsonData['data']['resultType'], "result" : resultList}
-      query = PrometheusQueriesResult(status = jsonData['status'], data = data)
+      queryModel = PrometheusQueriesResult(query = query, status = jsonData['status'], data = data)
 
-      return query
+      return queryModel
 
     except:
       return 'error' 
 
-  def saveDataOnMongoDB(jsonData):
+  # funzione che salva il Model su un'istanza locale di MongoDB
+  def saveDataOnMongoDB(self, query, jsonData):
 
-    query = PrometheusScraperThread.parseData(jsonData)
+    query = PrometheusScraperThread.parseData(self, query, jsonData)
 
     if query != 'error':
       query.save()
 
+  # task del Thread : legge una query dal file queries.txt, ne fa lo scrape e dopo avere creato 
+  # e caricato un Model MongoDB lo salva su un'istanza locale di MongoDB.
   def run(self):
 
     while True:
@@ -92,8 +134,8 @@ class PrometheusScraperThread(threading.Thread):
           if ('#' not in line) and line[0] != '\n' and line[0] != ' ':
             query = line.rstrip('\n')
             print(query)
-            jsonResponse = PrometheusScraperThread.scrape(query)
-            PrometheusScraperThread.saveDataOnMongoDB(jsonResponse)
+            jsonResponse = PrometheusScraperThread.scrape(self, query)
+            PrometheusScraperThread.saveDataOnMongoDB(self, query, jsonResponse)
 
       time.sleep(60)
 

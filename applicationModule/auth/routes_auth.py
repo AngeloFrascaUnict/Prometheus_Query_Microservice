@@ -91,7 +91,16 @@ def register():
                 newuser.save()
 
                 # Success, go to the login page.
-                return redirect(url_for("auth_bp.login"))            
+                # return redirect(url_for("auth_bp.login"))  
+                    
+                # store the user id in a new session and return to the Prometheus index page
+                user = User.objects(username=username_r).first()
+                
+                session.clear()
+                session.permanent = False
+                session["user_id"] = json.loads(json_util.dumps(user.pk))['$oid']
+
+                return redirect(url_for("prometheus_bp.prometheus_index"))     
 
             flash(error)
 

@@ -7,9 +7,11 @@ from threadsModule.PrometheusScraperThread import PrometheusScraperThread
 
 app = create_app()
 
-# avvio lo scraper su Prometheus con un thread
-#thread_scraper = PrometheusScraperThread()
-#thread_scraper.start()
+# avvio lo scraping dei dati su Prometheus con un thread distinto
+# solo se Prometheus server è avviato e pronto a ricevere query
+thread_scraper = PrometheusScraperThread()
+if thread_scraper.isHealth() and thread_scraper.isReady():
+    thread_scraper.start()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')

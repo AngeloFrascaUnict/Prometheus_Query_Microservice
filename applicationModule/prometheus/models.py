@@ -23,9 +23,10 @@ class Data(me.EmbeddedDocument):
 	result = me.ListField(me.EmbeddedDocumentField(Result))
 
 class PrometheusQueriesResult(me.Document):
+	query = me.StringField(required=True)
 	status = me.StringField(required=True)
 	data = me.EmbeddedDocumentField(Data)
 	errorType = me.StringField()
 	error = me.StringField()
-	created_at = me.DateTimeField(default=datetime.datetime.utcnow)
+	created_at = me.DateTimeField(default=datetime.datetime.now)
 

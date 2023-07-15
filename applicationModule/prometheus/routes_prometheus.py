@@ -49,20 +49,20 @@ def prometheus_index():
 def get_query_prometheus_results(fromDateTime=None):
 
     if fromDateTime == None :
-        data = PrometheusQueriesResult.objects()
+        data = PrometheusQueriesResult.objects().order_by('-created_at')
     else :
         # constructor : datetime.datetime(year, month, day, [hour], [minute], [second], [microsecond], [tzone])
         fromDateTimeFormatted = datetime.datetime(int(fromDateTime[0:4]), int(fromDateTime[4:6]), int(fromDateTime[6:8])
             , int(fromDateTime[9:11]), int(fromDateTime[11:13]))
 
-        data = PrometheusQueriesResult.objects(created_at__gt=fromDateTimeFormatted)
+        data = PrometheusQueriesResult.objects(created_at__gt=fromDateTimeFormatted).order_by('-created_at')
 
     if data is None:
         abort(404, description="Dati inesistenti")
     else:
-        #return jsonify(data.to_json())
+
         return render_template('query_prometheus.html',
-        title="Dati archiviati",
+        title="Dati aggiornati alla data " + data.first().created_at.strftime("%d/%m/%Y, %H:%M:%S"),
         description="queries response prometheus",
         data=data
         )
@@ -89,7 +89,7 @@ def convert_timestamp_to_date(s):
 
 @prometheus_bp.app_template_filter('formatdatetime')
 def format_date_time(s):
-    return s.strftime("%m/%d/%Y, %H:%M:%S")
+    return s.strftime("%d/%m/%Y, %H:%M:%S")
 
 
 

@@ -6,10 +6,16 @@
 .colorbluetext { color:rgb(29, 131, 214);}
 .colororangetext { color:rgb(214, 174, 29);}
 
+.oddRow {background-color: rgb(234, 241, 243); 
+	padding-bottom: 10px; padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px}
+.evenRow {background-color: rgb(250, 250, 236); 
+	padding-bottom: 10px; padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px}
+
 .container h1, .container h2, .container h3 { color: #377ba8; margin: 1rem 0; padding: 1rem;}
 
-div.container { margin-bottom: 30px; 
-	margin-left:-14px; padding: 0px; width: 103%; background-color: white;} 
+/* questo tag (margin-bottom) regola lo sprofondamento delle righe sul footer */
+div.container { margin-bottom: 30px; width: 103%; margin-left: -15px; border: 1px solid white} 
+body {background-color:transparent}
 
 .summary {
 	text-align: center;
