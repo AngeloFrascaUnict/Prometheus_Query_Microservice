@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  <h1>{% block title %}Index Prometheus{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% if g.user %}
+      <li><a href="{{ url_for('prometheus_bp.get_query_prometheus_results') }}">Prometheus data</a>
+    {% endif %}
+</ul>
+{% endblock %}

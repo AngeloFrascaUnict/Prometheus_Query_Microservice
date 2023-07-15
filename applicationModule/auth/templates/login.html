@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  <h1>{% block title %}Sign in{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="username">Username</label>
+    <div><input name="username" id="username" tabindex="1" required></div>
+    <label for="password">Password</label>
+    <div><input type="password" name="password" id="password" tabindex="2" required></div>
+    <div><input type="submit" tabindex="3" value="submit"></div>
+  </form>
+{% endblock %}

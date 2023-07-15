@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>{{title}}</title>
+  <meta charset="utf-8">
+  <meta name="description" content={{description}}>
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('prometheus_bp.static', filename='style.css') }}">
+</head>
+
+<body>
+
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home_bp.home_index_function') }}">Home</a>
+      {% if g.user %}
+        <li><span>{{ g.user['username'] }}</span>
+        <li><a href="{{ url_for('auth_bp.logout') }}">Sign out</a>
+      {% else %}
+        <li><a href="{{ url_for('auth_bp.register') }}">Sign up</a>
+        <li><a href="{{ url_for('auth_bp.login') }}">Sign in</a>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <section class="content">
+
+    <header>
+      {% block header %}{% endblock %}
+    </header>
+
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+
+  </section>  
+
+  {% include 'footer.html' %}
+  
+</body>
+
+</html>

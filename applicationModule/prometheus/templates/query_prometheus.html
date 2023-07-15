@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+  <h1>{% block title %}Query Prometheus{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <br>
+        <h1>{{title}}</h1>
+
+        {% for row in data %}
+
+            <div class="summary"><h1>Info</h1></div>
+            <div class="flex-container">
+                <div class="flex-cell cell-1of3">
+                    <h3 class="lefttext">Status</h3>
+                    {% if row.error %}
+                    <h3 class="lefttext">Error</h5>
+                    <h3 class="lefttext">Error type</h3>
+                    {% endif %}
+                    <h3 class="lefttext">Created at</h3>
+                </div>
+                <div class="flex-cell cell-2of3">
+                    <h3 class="lefttext colorbluetext"> {{ row.status }} </h3>
+                    {% if row.error %}
+                    <h3 class="lefttext colorbluetext"> {{ row.error }} </h3>
+                    <h3 class="lefttext colorbluetext"> {{ row.errorType }} </h3>
+                    {% endif %}
+                    <h3 class="lefttext colorbluetext"> {{ row.created_at | formatdatetime }} </h3>
+                </div>
+            </div>        
+            
+            {% if row.data %}
+
+                {% for rowinner in row.data.result %}
+
+                    <div class="summary"><h1>Metriche</h1></div>
+                    <div class="flex-container">
+                        <div class="flex-cell cell-1of3">
+                            <h3 class="lefttext">Name</h3>
+                            {% if rowinner.metric.code %}
+                            <h3 class="lefttext">Code</h3>
+                            {% endif %}
+                            {% if rowinner.metric.handler %}
+                            <h3 class="lefttext">Handler</h3>
+                            {% endif %}
+                            {% if rowinner.metric.method %}
+                            <h3 class="lefttext">Method</h3>
+                            {% endif %}
+                            {% if rowinner.metric.group %}
+                            <h3 class="lefttext">Group</h3>
+                            {% endif %}
+                            {% if rowinner.metric.instance %}
+                            <h3 class="lefttext">Instance</h3>
+                            {% endif %}
+                            {% if rowinner.metric.job %}
+                            <h3 class="lefttext">Job</h3>
+                            {% endif %}
+                        </div>
+                        <div class="flex-cell cell-2of3">
+                            <h3 class="lefttext colororangetext boldtext"> {{ rowinner.metric.__name__ }} </h3>
+                            {% if rowinner.metric.code %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.code }} </h3>
+                            {% endif %}
+                            {% if rowinner.metric.handler %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.handler }} </h3>
+                            {% endif %}
+                            {% if rowinner.metric.method %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.method }} </h3>
+                            {% endif %}
+                            {% if rowinner.metric.group %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.group }} </h3>
+                            {% endif %}
+                            {% if rowinner.metric.instance %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.instance }} </h3>
+                            {% endif %}
+                            {% if rowinner.metric.job %}
+                            <h3 class="lefttext colorbluetext"> {{ rowinner.metric.job }} </h3>
+                            {% endif %}
+                        </div>
+                    </div>  
+
+
+                    <div class="summary"><h1>Dati temporali</h1></div>
+
+                    {% if rowinner.value %}
+                    <div class="flex-container">
+                        <div class="flex-cell cell-1of3">
+                            <h3 class="lefttext">0</h3>
+                            <h3 class="lefttext">1</h3>
+                        </div>
+                        <div class="flex-cell cell-2of3">
+                            <h3 class="righttext colorbluetext">{{ rowinner.value[0] }}</h3>
+                            <h3 class="righttext colorbluetext">{{ rowinner.value[1] }}</h3>
+                        </div>
+                    </div>  
+                    {% endif %}
+
+                    {% if rowinner.values %}
+                        {% for rowinnerinner in rowinner.values %}
+                            <div class="flex-container">
+                                <div class="flex-cell cell-1of3">
+                                    <h3 class="lefttext">0</h3>
+                                    <h3 class="lefttext">1</h3>
+                                </div>
+                                <div class="flex-cell cell-2of3">
+                                    <h3 class="righttext colorbluetext">{{ rowinnerinner[0] }}</h3>
+                                    <h3 class="righttext colorbluetext">{{ rowinnerinner[1] }}</h3>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                {% endfor %}
+
+            {% endif %}
+            
+            <hr>
+
+        {% endfor %}
+
+    </div>
+{% endblock %}

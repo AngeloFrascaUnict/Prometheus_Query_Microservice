@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_mongoengine import MongoEngine
 
+
 # Globally accessible libraries
-#db = SQLAlchemy()
 db = MongoEngine()
 
 def create_app():
@@ -21,15 +21,15 @@ def create_app():
         from . import routes
 
         # Include & Register Blueprints
-        from .authentication import routes
-        app.register_blueprint(routes.auth_bp)
+        from .auth import routes_auth
+        app.register_blueprint(routes_auth.auth_bp)
 
         # Include & Register Blueprints
-        from .home import routes
-        app.register_blueprint(routes.home_bp)
+        from .home import routes_home
+        app.register_blueprint(routes_home.home_bp)
 
         # Include & Register Blueprints
-        from .prometheus import routes
-        app.register_blueprint(routes.prometheus_bp)        
+        from .prometheus import routes_prometheus
+        app.register_blueprint(routes_prometheus.prometheus_bp)        
 
         return app
