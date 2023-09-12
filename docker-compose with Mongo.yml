@@ -2,21 +2,57 @@
 version: '1'
 services:
   webapp:
+
     # Give your image a static name
     image: prometheus_microservice_image:v1.0
+
     # Give your container a static name
     container_name: prometheus_query_microservice_container
+
     build:
       context: .
       args:
           requirements: ./requirements.txt   
+
       #dockerfile: .\DockerFile
+
     entrypoint: python wsgi.py
+
     # Env file
     env_file:
       - .env
+
     ports:
      - "5000:5000"
+    links:
+     - mongo
+    depends_on:
+     - mongo
+
+    # networks:
+    #     netBackEnd:
+
+
+    
+
+  mongo:
+    image: "mongo:latest"
+    #hostname: mongo_container
+    volumes:
+      - app_data:/data/db
+
+    container_name: mongo_container
+    expose:
+        - 27017
+    ports:
+     - '27017:27017'
+
+    #command: mongod --port 27017 --bind_ip 0.0.0.0
+    command: /usr/bin/mongod --port 27017 --bind_ip 0.0.0.0
+    # networks:
+    #     netBackEnd:
+    #         ipv4_address: 192.168.0.2
+
 
 
 
@@ -43,6 +79,7 @@ services:
       - '8080:8080'
     # restart: always
     depends_on:
+     - mongo
      - webapp
      - stress_test_cpu
 
@@ -57,3 +94,15 @@ services:
 
 
 
+
+
+volumes:
+
+  app_data:
+
+# networks:
+#     netBackEnd:
+#         ipam:
+#             driver: default
+#             config:
+#                  - subnet: 192.168.0.0/24

@@ -1,37 +1,10 @@
 # FILE CON LE QUERY DA ESEGUIRE IN BATCH SU Prometheus_Query_Microservice
 # NB : verranno processate solo le line che non iniziano con '#' o con ' '
 
-# HELP process_virtual_memory_bytes Virtual memory size in bytes.
-# TYPE process_virtual_memory_bytes gauge
-process_virtual_memory_bytes
+# Counter, Cumulative cpu time consumed, seconds, cpu 
+# uso CPU nell'ultimo minuto (dal container "stress_test_cpu_container")
+#rate(container_cpu_usage_seconds_total{name="stress_test_cpu_container"}[1m])
 
-# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
-# TYPE process_start_time_seconds gauge
-process_start_time_seconds
-
-# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
-# TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total
-
-# Query che produce risultati Matrix
-up[1d:10m]
-
-# Bad Query for testing
-rate(http_requests_total{job="apiserver", handler="/api/comments"}[5m])[range,resolution]
-
-
-# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
-# TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds
-
-# HELP prometheus_http_requests_total Counter of HTTP requests.
-# TYPE prometheus_http_requests_total counter
-prometheus_http_requests_total
-
-# HELP prometheus_http_requests_total Counter of HTTP requests.
-# TYPE prometheus_http_requests_total counter
-
-# sum(prometheus_http_requests_total{method="GET"} @ 1609746000)
-sum(prometheus_http_requests_total{code ='200'})
-
-rate(prometheus_http_requests_total[5m] )
+# Gauge, Current memory usage, including all memory regardless of when it was accessed,	bytes, memory
+# bytes di Memoria usati per secondo nell'ultimo minuto (dal container "stress_test_cpu_container")
+rate(container_memory_usage_bytes{name="stress_test_cpu_container"}[1m]) 	

@@ -1,0 +1,19 @@
+# prometheus.yml : 
+# per monitorare più istanze di windows_exporter su porte differenti per ottenere metriche da Windows OS
+
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: 'cadvisor'
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['cadvisor:8080']
+    # - targets: ['localhost:8080']
+      # labels:
+      #   alias: 'cadvisor'
