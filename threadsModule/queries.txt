@@ -3,7 +3,7 @@
 
 # Counter, Cumulative cpu time consumed, seconds, cpu 
 # uso CPU nell'ultimo minuto (dal container "stress_test_cpu_container")
-#rate(container_cpu_usage_seconds_total{name="stress_test_cpu_container"}[1m])
+rate(container_cpu_usage_seconds_total{name="stress_test_cpu_container"}[1m])
 
 # Gauge, Current memory usage, including all memory regardless of when it was accessed,	bytes, memory
 # bytes di Memoria usati per secondo nell'ultimo minuto (dal container "stress_test_cpu_container")
