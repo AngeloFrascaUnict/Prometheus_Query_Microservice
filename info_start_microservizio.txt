@@ -1,0 +1,18 @@
+avviare Il microservizio FLASK da Terminal :
+	
+    //0. verificare se è installato MongoDB e se il servizio è abilitato e avviato nei Servizi Windows
+    //posso verificare i dati di MongoDB da MongoDB Compass connettendomi in Local Server con questa 
+    //connection string :     mongodb://localhost:27017/
+    
+	//1. questo comando funziona anche se abbiamo usato il pattern "Application Factory"
+	PS C:\TESI_Triennale\TESI_Triennale_Grafici\Progetti\GIT\Prometheus_Query_Microservice> python -m flask run
+
+	//2. seguire questo link
+	http://127.0.0.1:5000
+	
+	//3. usare le credenziali per fare il sign-in:
+	
+		username = Angelo
+		password = 12345
+		
+	//4. CTRL+C per stoppare il microservizio nel Terminal	
